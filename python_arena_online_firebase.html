@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PYTHON ARENA — OOP Battle</title>
+<style>
+:root{--bg:#080b18;--panel:#11182b;--line:#263452;--cyan:#42e8ff;--purple:#a78bfa;--green:#4ade80;--red:#fb7185;--text:#eef4ff;--muted:#9aabc8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#17254a 0,transparent 35%),radial-gradient(circle at 100% 30%,#241447 0,transparent 30%),var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,sans-serif;min-height:100vh}
+.wrap{max-width:1050px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.brand{font-weight:900;letter-spacing:2px;color:var(--cyan);font-size:20px}.tag{border:1px solid #31506c;background:#0e1b2d;border-radius:99px;padding:8px 13px;color:#b7d9ed;font-size:12px}
+h1{font-size:clamp(28px,5vw,48px);margin:24px 0 8px;line-height:1.05}h1 span{color:var(--cyan);text-shadow:0 0 20px #42e8ff55}.sub{color:var(--muted);margin:0 0 24px}
+.layout{display:grid;grid-template-columns:1.6fr 1fr;gap:18px}.card{background:linear-gradient(145deg,#121b30ee,#0d1425ee);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 20px 60px #0003}
+.card h2{margin:0 0 16px;font-size:18px}.field{width:100%;background:#080f1e;border:1px solid #2b3c5b;border-radius:12px;padding:13px;color:white;font-size:15px;outline:none}.field:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #42e8ff18}
+.btn{border:0;border-radius:12px;padding:13px 16px;font-weight:800;cursor:pointer;color:#07101b;background:linear-gradient(90deg,var(--cyan),#8cf7d2);transition:.15s}.btn:hover{transform:translateY(-1px);filter:brightness(1.06)}.btn.secondary{background:#1b2943;color:#dbeafe;border:1px solid #334765}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.startrow{display:grid;grid-template-columns:1fr auto;gap:10px}.status{font-size:13px;color:var(--muted);margin-top:10px;min-height:20px}
+.hidden{display:none!important}.qmeta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-bottom:15px}.progress{height:7px;background:#202b43;border-radius:99px;overflow:hidden;margin-bottom:22px}.bar{height:100%;background:linear-gradient(90deg,var(--purple),var(--cyan));width:0;transition:.3s}
+.question{font-size:22px;font-weight:750;line-height:1.35;margin:0 0 20px}.answers{display:grid;gap:10px}.answer{width:100%;text-align:left;border:1px solid #2b3c5b;background:#0b1324;color:#e7efff;padding:14px;border-radius:13px;cursor:pointer;font-size:15px}.answer:hover{border-color:#607ca8;background:#111d33}.answer.correct{border-color:var(--green);background:#123021}.answer.wrong{border-color:var(--red);background:#351823}.feedback{margin-top:14px;min-height:24px;font-weight:700}.next{margin-top:14px;width:100%}.scorebox{display:flex;gap:10px;margin:18px 0}.stat{flex:1;background:#0b1324;border:1px solid #243451;border-radius:14px;padding:12px}.stat small{display:block;color:var(--muted);font-size:11px}.stat strong{font-size:22px;color:var(--cyan)}
+.rankrow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid #202c43;gap:10px;font-size:14px}.rankrow:last-child{border:0}.ranknum{color:var(--purple);font-weight:900;width:25px}.rankname{flex:1;overflow-wrap:anywhere}.rankscore{color:var(--cyan);font-weight:800}.small{font-size:12px;color:var(--muted);line-height:1.5}.result{text-align:center;padding:18px 0}.result .big{font-size:54px;font-weight:900;color:var(--cyan)}.notice{border:1px solid #674d25;background:#2b2112;color:#f8d99b;padding:12px;border-radius:12px;font-size:13px;line-height:1.5;margin-top:15px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.wrap{padding:14px}.card{padding:17px}.startrow{grid-template-columns:1fr}.question{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="top"><div class="brand">⚡ PYTHON ARENA</div><div class="tag">3ПВТ-24-1 · ONLINE OOP BATTLE</div></div>
+ <h1>Мұрагерлік <span>& super()</span></h1>
+ <p class="sub">Python кластарын меңгер. XP жина. Онлайн рейтингке кір!</p>
+ <div class="layout">
+  <main class="card">
+   <section id="welcome">
+    <h2>Ойынға қосылу</h2>
+    <div class="startrow"><input id="nickname" class="field" maxlength="24" placeholder="Атыңды жаз (мысалы, Әділ)"><button id="start" class="btn">БАСТАУ →</button></div>
+    <div id="connectStatus" class="status">Firebase байланысы тек конфигурация енгізілгеннен кейін іске қосылады.</div>
+    <div class="scorebox"><div class="stat"><small>СҰРАҚ</small><strong>15</strong></div><div class="stat"><small>ӘР ДҰРЫС ЖАУАП</small><strong>+10 XP</strong></div><div class="stat"><small>РЕЖИМ</small><strong>ONLINE</strong></div></div>
+    <p class="small">Барлық қатысушы бір сайтқа кіріп, нәтижесін ортақ онлайн рейтингке жібереді.</p>
+   </section>
+   <section id="game" class="hidden">
+    <div class="qmeta"><span id="qcount">1 / 15</span><span id="playerLabel"></span></div><div class="progress"><div id="bar" class="bar"></div></div>
+    <p id="question" class="question"></p><div id="answers" class="answers"></div><div id="feedback" class="feedback"></div><button id="next" class="btn next hidden">КЕЛЕСІ →</button>
+   </section>
+   <section id="finish" class="hidden result"><div class="tag">RUN COMPLETE</div><div class="big" id="finalScore">0 XP</div><h2 id="finalText">Жарайсың!</h2><p id="saveStatus" class="status">Нәтиже жіберілуде...</p><button class="btn" id="again">ҚАЙТА ОЙНАУ ↻</button></section>
+  </main>
+  <aside class="card"><h2>🏆 LIVE LEADERBOARD</h2><p class="small">Рейтинг Firebase базасынан нақты уақытта жаңарады.</p><div id="leaderboard"><div class="status">Базаға қосылуды күтіп тұр…</div></div><div class="notice" id="dbNotice">Firebase конфигурациясын төмендегі нұсқаулық бойынша қосыңыз. Онсыз ортақ рейтинг жұмыс істемейді.</div></aside>
+ </div>
+ <p class="small" style="text-align:center;margin:20px">PYTHON ARENA · Inheritance & super() · 3ПВТ-24-1</p>
+</div>
+
+<!-- Firebase SDK (compat version keeps setup simple) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+// 1) Firebase Console -> Project settings -> Your apps -> Web app config.
+// Replace the placeholder values below with YOUR project's config.
+const firebaseConfig = {
+  apiKey: "PASTE_API_KEY",
+  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://PASTE_DATABASE_URL",
+  projectId: "PASTE_PROJECT_ID",
+  storageBucket: "PASTE_PROJECT_ID.appspot.com",
+  messagingSenderId: "PASTE_MESSAGING_SENDER_ID",
+  appId: "PASTE_APP_ID"
+};
+
+let db = null, online = false;
+try {
+  if (firebaseConfig.apiKey !== "PASTE_API_KEY" && firebaseConfig.projectId !== "PASTE_PROJECT_ID") {
+    firebase.initializeApp(firebaseConfig); db = firebase.database(); online = true;
+    document.getElementById("connectStatus").textContent = "Firebase конфигурациясы қосылды. Ойынға кіре бер!";
+    document.getElementById("dbNotice").textContent = "Онлайн база қосылған.";
+    db.ref("arena/leaderboard").orderByChild("score").limitToLast(50).on("value", snap => {
+      const list=[]; snap.forEach(x=>list.push(x.val())); list.sort((a,b)=>b.score-a.score || b.time-a.time);
+      renderRanks(list);
+    }, err => { document.getElementById("connectStatus").textContent="База қатесі: "+err.message; });
+  }
+} catch(e) { document.getElementById("connectStatus").textContent="Firebase қатесі: "+e.message; }
+
+const questions = [
+ {q:"Python тілінде мұрагерлік (inheritance) дегеніміз не?",a:["Бір кластың басқа кластың қасиеттері мен әдістерін қабылдауы","Айнымалыны жою","Функцияны циклге айналдыру","Тек сан сақтау"],c:0,e:"Туынды класс базалық кластың мүмкіндіктерін пайдалана алады."},
+ {q:"Базалық класс қалай аталады?",a:["Child class","Parent/Base class","Object list","Module"],c:1,e:"Базалық класс — мұра беретін ата-ана класс."},
+ {q:"Туынды класс құрудың дұрыс жазылуы:",a:["class Child extends Parent:","class Child(Parent):","def Child(Parent):","class Child = Parent"],c:1,e:"Python-да ата-ана класс жақша ішінде көрсетіледі."},
+ {q:"super() не үшін қолданылады?",a:["Базалық кластың әдісін шақыру үшін","Экранды тазалау үшін","Класты өшіру үшін","Тізімді сұрыптау үшін"],c:0,e:"super() ата-ана класының әдістеріне қол жеткізуге мүмкіндік береді."},
+ {q:"Конструктордың Python-дағы атауы:",a:["constructor()","init()","__init__()","start()"],c:2,e:"__init__ объект жасалған кезде шақырылады."},
+ {q:"super().__init__() не істейді?",a:["Ата-ана кластың конструкторын іске қосады","Бағдарламаны аяқтайды","Жаңа файл ашады","Объектіні экраннан жасырады"],c:0,e:"Ол базалық кластың бастапқы параметрлерін орнатады."},
+ {q:"Мына кодта Parent қайсы? class Child(Parent):",a:["Child","Parent","Екеуі де емес","Жақша"],c:1,e:"Parent — базалық, Child — туынды класс."},
+ {q:"Мұрагерліктің негізгі артықшылығы:",a:["Кодты қайталау көбейеді","Кодты қайта пайдалану","Бағдарлама баяулайды","Қате міндетті түрде шығады"],c:1,e:"Ортақ кодты базалық класта сақтауға болады."},
+ {q:"Әдісті туынды класта қайта анықтау қалай аталады?",a:["Overriding","Looping","Casting","Importing"],c:0,e:"Overriding — ата-ана әдісінің туынды класта жаңа нұсқасын жазу."},
+ {q:"super() қай кластың әдісін шақыруға көмектеседі?",a:["Тек туынды","Базалық/ата-ана","Кез келген кездейсоқ","Тек импортталған"],c:1,e:"super() ағымдағы кластың базалық класымен байланысады."},
+ {q:"Python-да барлық кластар түптеп келгенде қай кластан тарайды?",a:["Main","Root","object","super"],c:2,e:"object — Python кластар иерархиясының түбірі."},
+ {q:"Қайсысы дұрыс?",a:["class Student(Person):","class Student[Person]:","Student class Person","def Student: Person"],c:0,e:"Мұрагерлік класс атауынан кейін жақшада беріледі."},
+ {q:"Туынды класс базалық кластың private атрибутын тікелей пайдалана ала ма?",a:["Әрқашан иә","Әдетте тікелей қолжетімсіз","Тек print арқылы","Тек циклмен"],c:1,e:"__name сияқты name mangling қолданылған атрибуттарға тікелей қол жеткізу шектеледі."},
+ {q:"super() қолданудың дұрыс мысалы:",a:["super().__init__(name)","super.init(name)","parent()","this.super()"],c:0,e:"Көбіне туынды класс конструкторында қолданылады."},
+ {q:"Мұрагерлік қай ООБ принципіне жатады?",a:["Инкапсуляция","Мұрагерлік","Полиморфизм ғана","Абстракция емес"],c:1,e:"Inheritance — объектіге бағытталған бағдарламалаудың негізгі принциптерінің бірі."}
+];
+let idx=0,score=0,name="",answered=false;
+const $=id=>document.getElementById(id);
+$("start").onclick=()=>{name=$("nickname").value.trim();if(!name){$("connectStatus").textContent="Алдымен атыңды енгіз!";return}
+ $("welcome").classList.add("hidden");$("game").classList.remove("hidden");$("playerLabel").textContent=name;idx=0;score=0;showQ();};
+function showQ(){answered=false;$("qcount").textContent=(idx+1)+" / "+questions.length;$("bar").style.width=(idx/questions.length*100)+"%";const q=questions[idx];$("question").textContent=q.q;$("answers").innerHTML="";q.a.forEach((a,i)=>{let b=document.createElement("button");b.className="answer";b.textContent=String.fromCharCode(65+i)+". "+a;b.onclick=()=>choose(i,b);$("answers").appendChild(b)});$("feedback").textContent="";$("next").classList.add("hidden");}
+function choose(i,button){if(answered)return;answered=true;const q=questions[idx];[...$("answers").children].forEach((b,j)=>{b.disabled=true;if(j===q.c)b.classList.add("correct")});if(i===q.c){score+=10;$("feedback").textContent="✓ ДҰРЫС! +10 XP · "+q.e;$("feedback").style.color="var(--green)"}else{button.classList.add("wrong");$("feedback").textContent="✕ ҚАТЕ · "+q.e;$("feedback").style.color="var(--red)"}$("next").classList.remove("hidden");}
+$("next").onclick=()=>{idx++;if(idx<questions.length)showQ();else finish();};
+async function finish(){$("game").classList.add("hidden");$("finish").classList.remove("hidden");$("finalScore").textContent=score+" XP";$("finalText").textContent=score>=120?"Керемет нәтиже!":"Жақсы! Тағы жаттығып көр."; $("bar").style.width="100%";
+ if(!db){$("saveStatus").textContent="Firebase қосылмаған: нәтиже тек осы құрылғыда көрсетілді.";return}
+ try{await db.ref("arena/leaderboard").push({name:name,score:score,time:Date.now(),group:"3ПВТ-24-1"});$("saveStatus").textContent="✓ Нәтиже ортақ онлайн рейтингке сақталды!";}catch(e){$("saveStatus").textContent="Сақтау қатесі: "+e.message;}}
+$("again").onclick=()=>{$("finish").classList.add("hidden");$("welcome").classList.remove("hidden");$("nickname").value=name;};
+function renderRanks(list){const el=$("leaderboard");if(!list.length){el.innerHTML='<p class="small">Әзірге нәтиже жоқ. Бірінші болып ойна!</p>';return}
+ el.innerHTML=list.slice(0,10).map((x,i)=>`<div class="rankrow"><span class="ranknum">${i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1}</span><span class="rankname">${escapeHtml(x.name||"Player")}<br><small class="small">${escapeHtml(x.group||"3ПВТ-24-1")}</small></span><span class="rankscore">${Number(x.score)||0} XP</span></div>`).join("");}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+</script>
+</body>
+</html>
